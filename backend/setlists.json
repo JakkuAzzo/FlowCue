@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Sample Song",
+    "sections": [
+      {
+        "label": "Verse 1",
+        "lyric": "This is verse one",
+        "background": { "type": "image", "src": "/media/bg1.jpg" }
+      },
+      {
+        "label": "Chorus",
+        "lyric": "This is the chorus",
+        "background": { "type": "image", "src": "/media/bg2.jpg" }
+      }
+    ]
+  }
+]

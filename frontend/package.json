@@ -13,7 +13,10 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "@mediapipe/hands": "^0.4.1646424915",
+    "@tensorflow-models/handpose": "^0.0.7",
+    "@tensorflow/tfjs-core": "^4.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

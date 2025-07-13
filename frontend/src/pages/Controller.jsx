@@ -1,59 +1,54 @@
-import { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
+import { useEffect, useState } from 'react';
+import { socket } from '../services/socket.js';
+import useGestures from '../hooks/useGestures.js';
+import useVoice from '../hooks/useVoice.js';
 
-const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:4000');
-
-function Controller(){
+export default function Controller() {
+  const [setlists, setSetlists] = useState([]);
   const [state, setState] = useState(null);
 
   useEffect(() => {
+    fetch('/api/setlists').then(res => res.json()).then(setSetlists);
     fetch('/api/state').then(res => res.json()).then(setState);
     socket.on('state:update', setState);
-    return () => socket.off('state:update');
+    return () => socket.off('state:update', setState);
   }, []);
 
-  const sendAction = action => {
-    fetch('/api/control', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ action })
-    });
-  };
+  const emit = action => socket.emit('control:action', { action });
 
-  const setlist = ['Verse 1', 'Chorus', 'Verse 2'];
+  const { start: startGestures, stop: stopGestures } = useGestures(emit);
+  const { start: startVoice, stop: stopVoice } = useVoice(emit);
+  useEffect(() => { startGestures(); startVoice(); return () => { stopGestures(); stopVoice(); }; }, []);
+
+  if (!state) return null;
+  const song = setlists.find(s => s.id === state.currentSongId) || {};
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h1>Controller</h1>
-      <div style={{ marginBottom: '1rem' }}>
-        Current Section: {state?.currentSectionIndex}
-      </div>
-      <div style={{ marginBottom: '1rem' }}>
-        <button onClick={() => sendAction('prev')}>Prev</button>
-        <button onClick={() => sendAction('next')} style={{ marginLeft: '0.5rem' }}>Next</button>
-      </div>
-      <div style={{ marginBottom: '1rem' }}>
-        <h2>Setlist</h2>
+    <div className="flex h-screen">
+      <div className="w-1/4 p-4 border-r overflow-y-auto">
+        <h2 className="font-bold mb-2">Setlist</h2>
+        <select className="mb-4 w-full">
+          {setlists.map(s => (
+            <option key={s.id} value={s.id}>{s.title}</option>
+          ))}
+        </select>
         <ol>
-          {setlist.map((s, i) => (
-            <li key={i}>{s}</li>
+          {(song.sections || []).map((sec, i) => (
+            <li key={i} className={i === state.currentSectionIndex ? 'font-bold' : ''}>{sec.label}</li>
           ))}
         </ol>
       </div>
-      <div>
-        <h2>Gesture Mapping</h2>
-        <label>
-          Next Gesture
-          <input style={{ marginLeft: '0.5rem' }} defaultValue="SwipeRight" />
-        </label>
-        <br />
-        <label>
-          Prev Gesture
-          <input style={{ marginLeft: '0.5rem' }} defaultValue="SwipeLeft" />
-        </label>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="border p-4 w-3/4 text-center">
+          <div className="text-xl mb-2">{state.lyric}</div>
+        </div>
+      </div>
+      <div className="w-1/4 p-4 border-l flex flex-col gap-2">
+        <button onClick={() => emit('PREV_SLIDE')} className="border p-2">Prev Slide</button>
+        <button onClick={() => emit('NEXT_SLIDE')} className="border p-2">Next Slide</button>
+        <button onClick={() => emit('NEXT_SONG')} className="border p-2">Next Song</button>
+        <button onClick={() => emit('DETECT_SONG')} className="border p-2">Detect Song</button>
       </div>
     </div>
   );
 }
-
-export default Controller;
