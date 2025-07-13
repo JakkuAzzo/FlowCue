@@ -29,7 +29,7 @@ FlowCue Live revolves around three primary UIs—controller, performer, and audi
 
 - **Front-End**: React, Vite, TailwindCSS, MediaPipe.js, TensorFlow.js
 - **Back-End**: Node.js, Express, Socket.IO
-- **Database**: PostgreSQL (or Supabase)
+- **Database**: SQLite (stored at `./backend/data/flowcue.db`)
 - **Real-Time**: Firebase Realtime DB (optional fallback)
 - **Audio Recognition**: ACRCloud API or OpenAI Whisper
 - **Hosting**: Vercel (front-end), Heroku/DigitalOcean (API)
@@ -42,8 +42,7 @@ FlowCue Live revolves around three primary UIs—controller, performer, and audi
    cd flowcue-live
    ```
 2. **Configure environment**
-   - Copy `.env.example` → `.env`
-   - Fill in `API_URL`, `DB_URL`, `ACRCLOUD_KEY`, etc.
+   - Copy `.env.example` → `.env` in both `frontend` and `backend`
 3. **Install dependencies**
    ```bash
    # Front-end
@@ -56,21 +55,12 @@ FlowCue Live revolves around three primary UIs—controller, performer, and audi
    ```
 4. **Run locally**
    ```bash
-   # Start database (e.g. via Docker)
-   docker-compose up -d
-
-   # API server
-   cd backend
-   npm run dev
-
-   # Frontend
-   cd ../frontend
-   npm run dev
+   npm start
    ```
 5. **Access**
-   - Controller UI: http://localhost:3000/controller
-   - Performer UI: http://localhost:3000/performer
-   - Audience UI: http://localhost:3000/audience
+   - Controller UI: http://localhost:4173/controller
+   - Performer UI: http://localhost:4173/performer
+   - Audience UI: http://localhost:4173/audience
 
 ## Project Structure
 
@@ -88,7 +78,6 @@ flowcue-live/
 │   │   ├── models/
 │   │   └── routes/
 │   └── server.js
-├── docker-compose.yml # DB + optional services
 └── README.md
 ```
 
