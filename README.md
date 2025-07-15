@@ -6,6 +6,8 @@ FlowCue Live is a web-based performance controller that lets worship leaders, mu
 
 - **Gesture Control**: Next/Previous slides, switch songs, trigger live song detection.
 - **Voice & Audio Recognition**: "Next slide", "Previous", live lyrics lookup via Whisper or ACRCloud.
+- **Lyrics Search & Library**: Search and download lyrics for any song using the Genius API.
+- **Local Song Library**: Save songs to your personal library for offline use.
 - **Real-Time Sync**: All connected devices stay in perfect sync via Socket.IO or Firebase.
 - **Extended Display**: Audience and performer screens with custom layouts.
 - **Dynamic Backgrounds**: Video or image backgrounds with automatic contrast adjustment.
@@ -20,6 +22,8 @@ FlowCue Live revolves around three primary UIs—controller, performer, and audi
 - Gesture-driven next/previous slide and song switching
 - Voice commands for basic navigation
 - Upload markdown, pptx or pdf lyrics
+- **Search and download lyrics from online sources**
+- **Personal song library management**
 - Extended audience and performer displays
 - Dynamic background media with automatic text contrast
 - Real-time state sync across connected clients
@@ -41,26 +45,27 @@ FlowCue Live revolves around three primary UIs—controller, performer, and audi
    git clone https://github.com/your-org/flowcue-live.git
    cd flowcue-live
    ```
-2. **Configure environment**
-   - Copy `.env.example` → `.env` in both `frontend` and `backend`
-3. **Install dependencies**
+2. **Run setup script**
    ```bash
-   # Front-end
-   cd frontend
-   npm install
-
-   # Back-end
-   cd ../backend
-   npm install
+   ./setup.sh
    ```
+   This will automatically install dependencies for both frontend and backend.
+
+3. **Configure environment** (optional)
+   - Copy `.env.example` → `.env` in both `frontend` and `backend` if you need custom settings
+
 4. **Run locally**
    ```bash
    npm start
    ```
-5. **Access**
-   - Controller UI: http://localhost:4173/controller
-   - Performer UI: http://localhost:4173/performer
-   - Audience UI: http://localhost:4173/audience
+   This will start both frontend and backend servers concurrently.
+
+5. **Access the application**
+   - Frontend (main app): http://localhost:5173/
+   - Backend API: http://localhost:4000/
+   - Controller UI: http://localhost:5173/controller
+   - Performer UI: http://localhost:5173/performer
+   - Audience UI: http://localhost:5173/audience
 
 ## Project Structure
 
